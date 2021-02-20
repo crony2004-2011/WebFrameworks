@@ -1,0 +1,78 @@
+To make forms we need 5 .py files
+1. views.py
+2.models.py
+3.forms.py
+4.admin.py
+5.urls.py
+These forms are of two types : 
+a) Model forms (uses models.Model class in models.py page & forms.ModelForm class nforms.py)
+b)Django Forms (uses forms.Form class in models.py page)
+
+In django forms we do not need any models.py page but for higher authentication levels models.py forms are preffered (ref :  javapoint.com/django page)
+
+MODEL FORMS
+
+urls.py
+from django.contrib import admin 
+from django.urls import url
+from app import views
+urlpatterns = [
+path('admin/',admin.site.urls)
+path('page1/',views.function)
+]
+
+app/models.py
+from django.db import models
+class customer(models.Model):
+name = models.CharField()
+phone = models.CharFiels()
+class Meta:
+db_table = "student"
+#the table is created in the default sqlite3 db under the student table
+
+app/form.py
+from app.models import customer
+class cusform(forms.ModelForm):
+class Meta:
+model = customer
+fields = "__all__"
+#here customer class within models.py is saved in the model variable
+
+app/views.py
+from app/form import cusform
+from django.shortcuts import render
+def index(request):
+a = cusform()
+return render(request,'index.html',{'form':a})
+#form.py imports from models.py and views.py import from form.py
+index.html
+<html>
+<form method = "post">
+{%csrf token}
+{{form.as_p}}
+</form>
+</html>
+
+DJANGO FORMS
+Similar to model form except views.py imports directly from models.py
+
+models.py
+from django improt forms
+class student(forms.Form):
+name = forms.CharField()
+phone = forms.CharField()
+
+views.py
+from app.models import student
+from django.db import render
+def index(request):
+a = student()
+return render(request , 'index.html' , {'form' : a})
+
+index.html
+<html>
+<form method = "post">
+{%csrd token}
+{{form.as_p}}
+</form>
+</html>

@@ -1,0 +1,9 @@
+import csv
+def csvfile(request):
+response = HttpResponse(content_type = "text/csv")
+response['a'] = 'attachment;filename = "file.csv"'
+writer = csv.writer(response)
+writer.writerow('1' , 'aman' , '28')
+writer.writerow('2' , 'milo' , '8')
+writer.writerow('3' , 'coco' , '7')
+return response

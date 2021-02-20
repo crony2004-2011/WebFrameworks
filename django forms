@@ -30,7 +30,7 @@ class Meta:
 db_table = "student"
 #the table is created in the default sqlite3 db under the student table
 
-app/form.py
+app/forms.py
 from app.models import customer
 class cusform(forms.ModelForm):
 class Meta:
@@ -76,3 +76,55 @@ index.html
 {{form.as_p}}
 </form>
 </html>
+
+FORM VALIDATION
+In form validation, models.py and form.py page stays the same, we import class
+from models.py through import and then under class Meta we add the class 
+inside a variable.
+
+views.py
+def index(request):
+if request.method == "POST";
+form = cusform(request.POST)
+if form.is_valid():
+try:
+condition
+except:
+pass
+else:
+form = cusform()
+return render(request , "index.html" , {'form' : form})
+
+index.html
+<html>
+<form method = "post">
+{%csrd token}
+{{form.as_p}}
+</form>
+</html>
+
+UPLOAD FILE
+
+in the models.py or forms.py in model or django forms respectively, we add
+file = forms.FileField()
+
+views.py
+
+def index(request):
+if request.method == "POST";
+form = cusform(request.POST , request.FILES)
+if form.is_valid():
+try:
+upload(request,FILES['file'])
+#this function is an upload function
+except:
+pass
+else:
+form = cusform()
+return render(request , "index.html" , {'form' : form})
+
+def upload(f):
+with open("app/static/upload/' + f.name + "wb+") as x:
+for chink in f.chunks():
+x.write(chunk)
+#we add js , css and images in upload folder under static folder

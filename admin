@@ -1,0 +1,10 @@
+from app.models import customer
+#app is the main folder and customer is the class within models.py
+from django.contrib import admin
+
+class arangement(admin.ModelAdmin):
+fields = ['phone','name',]
+
+admin.site.register(customer , arangement)
+#we can register the customer classs and change the order of the fields via the 
+arangement class

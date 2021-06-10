@@ -1,71 +1,47 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+import requests
+from bs4 import BeautifulSoup
+from .models import *
 from django.http import HttpResponse
-from appdj.models import player , team , grounds
-from django.template import loader
-from appdj.form import contactform
 # Create your views here.
-from appdj.form import *
 
 def index(request):
-    return HttpResponse("<h1>Index function works</h1>")
-def intro(requet):
-    return HttpResponse("<h1>Welcome to Intro Page and the intro function works</h1>")
+    return render(request, 'home.html',{'context':'Welcome'})
 
-def contact(request):
-    all = player.objects.all()
-    html = ''
-    for i in all:
-        url = str(i.playername) + "-" + str(i.position)
-        html += "<li>" + url + "</li>"
-    return HttpResponse(html)
+def form(request):
+    return render(request, 'form.html')
 
-def forms(request):
+def transfers(request):
+    url = "https://www.sportsmole.co.uk/football/man-utd/transfer-talk/feature/premier-league-transfer-ins-and-outs-summer-2020_404715.html"
+    x = requests.get(url)
+    soup = BeautifulSoup(x.content, 'html.parser')
+    soup_body = soup.find('div', id='article_body')
+    soup1 = soup_body.find_all('p')[4].getText()
+    soup2 = soup_body.find_all('p')[5].getText()
+    soup3 = soup_body.find_all('p')[7].getText()
+    soup4 = soup_body.find_all('p')[8].getText()
+    soup5 = soup_body.find_all('p')[9].getText()
+    soup6 = soup_body.find_all('p')[11].getText()
+    context = {'soup1': soup1, 'soup2': soup2, 'soup3': soup3, 'soup4': soup4, 'soup5': soup5,'soup6':soup6}
+    return render(request, 'success.html', context)
+
+def form_to_model(request):
     if request.method == 'POST':
-        form = contactform(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            print(name,email)
+        name = request.POST['name']
+        phone = request.POST['phone']
+        city = request.POST['city']
+        address = request.POST['address']
+        email = request.POST['email']
+        query = request.POST['query']
+        form_query = formquery(name=name, phone=phone, city=city, address=address, email=email, Query=query)
+        form_query.save()
+        return render(request, 'form.html')
 
-    form = contactform()
-    return render(request, 'html/forms.html', {'form' : form})
+def queries(request):
+    x = formquery.objects.all()
+    context = {'x': x}
+    return render(request, 'customer_query.html', context)
 
-def teams(request):
-    alll = team.objects.all()
-    html = ''
-    for i in alll:
-        url = str(i.name) + "-" + str(i.location)
-        html += "<li>" + url + "</li>"
-    return HttpResponse(html)
-
-def templates(request):
-    allll = team.objects.all()
-    alllll = player.objects.all()
-    #template = loader.get_template('html/temp.html')
-    #this step is wierd but INFORMATION CAN BE PASSED TO THE HTML PAGE THROUGH DICTIONARY ONLY.
-    context = {
-        'alllll' : alllll,
-        'allll' : allll ,
-    }
-    #we can either use render or template method, render function ofcourse had less syntax
-    return render(request , 'html/temp.html' , context)
-    #return HttpResponse(template.render(context, request))
-
-def arsenal(request):
-    allll = team.objects.all()
-    return render(request, 'html/arsenal.html')
-
-def chelsea(request):
-    allll = team.objects.all()
-    return render(request, 'html/chelsea.html')
-
-def modelform(request):
-    if request.method == 'POST':
-        form = gr(request.POST)
-        if form.is_valid():
-            print('valid')
-
-    form = gr()
-    return render(request, 'html/modelform.html', {'form' : form})
-
+def signup(request):
+    return render(request,'signup.html')
 

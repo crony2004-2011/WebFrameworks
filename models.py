@@ -1,26 +1,22 @@
 from django.db import models
-from django import forms
+
 # Create your models here.
-# If we add any new class , attribute or function within this page ,we need to go to the cmd and write python manage.py makemigrations and python manage.py migrate
-
-class team(models.Model):
-    name = models.CharField(max_length=1000)
-    location = models.CharField(max_length=500)
-
-class player(models.Model):
-    playerid = models.ForeignKey(team, on_delete=models.CASCADE)
-    playername = models.CharField(max_length=500)
-    position = models.CharField(max_length=500)
-
-class grounds(models.Model):
-    groundname = models.CharField(max_length=500)
-    groundimage = models.TextField()
+class formquery(models.Model):
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=13)
+    city = models.CharField(max_length=40)
+    address = models.CharField(max_length=100)
+    email = models.CharField(max_length=60)
+    Query = models.CharField(max_length=400)
 
     def __str__(self):
-        return self.groundname
+        return self.name
 
+class transfers(models.Model):
+    team = models.CharField(max_length=100)
+    player = models.CharField(max_length=100)
+    price = models.CharField(max_length=100)
 
-
-
-
+    def __str__(self):
+        return self.player
 

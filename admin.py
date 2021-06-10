@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import player , team
+from .models import *
+
 # Register your models here.
-admin.site.register(player)
-admin.site.register(team)
+admin.site.register(formquery)
+admin.site.register(transfers)
+

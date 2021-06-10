@@ -1,8 +1,15 @@
 from django.contrib import admin
-from django.conf.urls import include , url
 from django.urls import path
-from appdj import views
+from django.urls import include, path
+from django.conf.urls import url
 from . import views
+
 urlpatterns = [
-    url('^$', views.index),
+    #path('', views.index, name='home')
+    url(r'^/$', views.index, name='home'),
+    path('/form/', views.form, name='form'),
+    path('/transfers/', views.transfers, name="transfers"),
+    path('', views.form_to_model, name="form_to_model"),
+    path('/queries/', views.queries, name='queries'),
+    path('/signup/', views.signup, name='signup')
 ]
